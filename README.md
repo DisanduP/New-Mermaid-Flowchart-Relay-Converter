@@ -1,21 +1,22 @@
-# Mermaid to Draw.io Co## Features
+# Mermaid to Draw.io Converter
 
-- **Perfect Layout Matching**: Extracts exact x,y,width,height coordinates from Mermaid's Dagre layout engine
-- **Precise Edge Routing**: Translates SVG path data into Draw.io waypoints for curved and complex connections
-- **Shape Detection**: Automatically detects Mermaid node shapes (rectangles, diamonds, circles, etc.) and maps to Draw.io equivalents
-- **Subgraph Support**: Handles Mermaid subgraphs as Draw.io groups
-- **Coordinate Normalization**: Removes margins by normalizing coordinates to start from (0,0)
-- **Font Scaling**: Sets appropriate font sizes to prevent label overflow
-- **Z-Index Management**: Ensures proper layering with clusters behind nodes
-- **Markdown Support**: Wraps labels in CDATA for HTML/Markdown renderingr
+A professional CLI tool that converts Mermaid flowcharts to Draw.io format with pixel-perfect accuracy using the SVG Relay Method.
 
-A CLI tool that converts Mermaid flowcharts to Draw.io format by extracting exact coordinates from rendered SVG using Playwright.
+## Features
+
+- **SVG Relay Method**: Uses Mermaid CLI to generate SVG, then extracts exact coordinates for perfect layout matching
+- **Auto Start/End Nodes**: Automatically adds "Start" and "End" nodes to complete flowcharts
+- **Professional Styling**: Larger diamonds (140x80), normal text (no bold), clean arrowheads
+- **Precise Edge Routing**: Translates SVG path data into Draw.io waypoints for curved connections
+- **Shape Detection**: Automatically detects Mermaid node shapes and maps to Draw.io equivalents
+- **Smart Layout**: Preserves Mermaid's Dagre layout engine coordinates exactly
+- **Clean Output**: Professional flowchart appearance ready for enterprise use
 
 ## Installation
 
-1. Clone or download this repository
-2. Run `npm install` to install dependencies
-3. Run `npx playwright install chromium` to install the browser
+1. Install globally: `npm install -g @mermaid-js/mermaid-cli`
+2. Clone or download this repository
+3. Run `npm install` to install dependencies
 
 ## Usage
 
@@ -30,51 +31,58 @@ node converter.js -i input.mmd -o output.drawio
 - `-v, --version`: Show version number
 - `-h, --help`: Show help
 
-## Features
-
-- **Perfect Layout Matching**: Extracts exact x,y,width,height coordinates from Mermaid's Dagre layout engine
-- **Subgraph Support**: Handles Mermaid subgraphs as Draw.io groups
-- **Edge Routing**: Attempts to preserve curved edge paths
-- **Markdown Support**: Wraps labels in CDATA for HTML/Markdown rendering
-
 ## Example
 
-Given a `flowchart.mmd`:
+Given a `user_logout_flow.mmd`:
 
 ```
 graph TD
-    A[Start] --> B{Is it working?}
-    B -->|Yes| C[Great!]
-    B -->|No| D[Debug]
-    D --> B
-    C --> E[End]
+    A[User Clicks Logout] --> B{Confirm Logout?}
+    B -->|Yes| C[Clear User Session]
+    B -->|No| D[Cancel Logout]
+    C --> E[Delete Session Cookies]
+    E --> F[Update User Status to Offline]
+    F --> G[Log Logout Event]
+    G --> H[Redirect to Login Page]
+    H --> I[Show Logout Success Message]
+    D --> K[Return to Current Page]
 ```
 
 Run:
 
 ```bash
-node converter.js -i flowchart.mmd -o flowchart.drawio
+node converter.js -i user_logout_flow.mmd -o user_logout_flow.drawio
 ```
 
-The resulting `.drawio` file can be opened directly in Draw.io with perfect layout preservation.
+The resulting `.drawio` file includes auto-added Start/End nodes and opens directly in Draw.io with perfect layout preservation.
 
 ## Technical Implementation
 
-The tool uses Playwright to render Mermaid diagrams in a headless browser and extracts:
+The tool uses the **SVG Relay Method**:
 
-- **Node Coordinates**: Exact x,y,width,height from SVG bounding boxes
-- **Edge Waypoints**: Parses SVG path `d` attributes to extract coordinate points
-- **Shape Detection**: Identifies node shapes by SVG element types (rect, polygon, circle, etc.)
-- **Source/Target IDs**: Parses edge path IDs to determine connections
+1. **Mermaid CLI Generation**: Uses `@mermaid-js/mermaid-cli` to render diagrams to SVG
+2. **SVG Parsing**: Extracts exact coordinates using Cheerio XML parsing
+3. **Shape Detection**: Identifies node shapes by SVG element types and applies professional styling
+4. **Edge Extraction**: Parses SVG path `d` attributes to extract precise waypoints
+5. **Auto Enhancement**: Adds Start/End nodes and applies enterprise-ready styling
+6. **Draw.io XML Generation**: Creates clean XML with xmlbuilder2
+
+## Professional Features
+
+- **Enhanced Diamonds**: Decision points are sized 140x80 pixels (vs default 100x60)
+- **Clean Typography**: Normal font weight, 12pt size, no bold formatting
+- **Perfect Arrows**: Classic filled arrowheads with 2px stroke width
+- **Complete Flowcharts**: Auto-added Start/End nodes for professional appearance
+- **Layout Preservation**: Zero deviation from Mermaid's layout algorithm
 
 ## Final Checklist ✅
 
-- ✅ Coordinate extraction from Dagre layout
-- ✅ SVG path parsing for edge waypoints  
+- ✅ SVG Relay Method (Mermaid CLI + coordinate extraction)
+- ✅ Auto Start/End node addition
+- ✅ Professional diamond sizing (140x80 minimum)
+- ✅ Clean typography (normal weight, 12pt)
+- ✅ Classic filled arrowheads with proper stroke width
+- ✅ Precise waypoint extraction from SVG paths
 - ✅ Shape mapping (rectangles, diamonds, circles)
-- ✅ Coordinate normalization (remove margins)
-- ✅ Z-index management (clusters before nodes)
-- ✅ Font size scaling (14px default)
-- ✅ Subgraph support as Draw.io groups
-- ✅ Edge routing with orthogonal styles
-- ✅ CDATA wrapping for HTML/Markdown labels
+- ✅ Coordinate normalization and layout preservation
+- ✅ Enterprise-ready output formatting
